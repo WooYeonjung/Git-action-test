@@ -51,10 +51,10 @@ jobs:
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
         run: |
-          FILE="artifacts/dist-${{ github.sha }}.tar.gz"
+          FILE="artifacts/build-${{ github.sha }}.tar.gz"
           curl -v \
             -u "${NEXUS_USER}:${NEXUS_PASSWORD}" \
             --upload-file "${FILE}" \
-            "http://10.0.0.152:8081/repository/second/yjTest/dist-${{ github.sha }}.tar.gz"
+            "http://10.0.0.152:8081/repository/second/yjTest/build-${{ github.sha }}.tar.gz"
 
             
