@@ -40,6 +40,16 @@ jobs:
             exit 1
           fi
           echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_ENV
+
+
+
+      - name: Run Trivy scanner      # 빌드 후 → Nexus 전
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'            # build/ + node_modules 검사
+          format: 'sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'             # 취약점 있으면 중단!
       - name: Archive dist to tar.gz
         run: |
           mkdir -p artifacts
