@@ -43,7 +43,7 @@ jobs:
       - name: Archive dist to tar.gz
         run: |
           mkdir -p artifacts
-          tar -czf artifacts/build-${{ github.sha }}.tar.gz dist # build/ 사용
+          tar -czf artifacts/build-${{ github.sha }}.tar.gz build # build/ 사용
           echo "✅ build folder archived"
 
       - name: Upload tar.gz to Nexus raw repo
