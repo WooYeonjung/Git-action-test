@@ -1,0 +1,43 @@
+name: Build and Upload tar.gz to Nexus
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Vite
+        run: npm run build
+
+      - name: Archive dist to tar.gz
+        run: |
+          mkdir -p artifacts
+          tar -czf artifacts/dist-${{ github.sha }}.tar.gz dist
+
+      - name: Upload tar.gz to Nexus raw repo
+        env:
+          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        run: |
+          FILE="artifacts/dist-${{ github.sha }}.tar.gz"
+          curl -v \
+            -u "${NEXUS_USER}:${NEXUS_PASSWORD}" \
+            --upload-file "${FILE}" \
+            "http://10.0.0.152:8081/repository/second/yjTest/dist-${{ github.sha }}.tar.gz"
+
+            
