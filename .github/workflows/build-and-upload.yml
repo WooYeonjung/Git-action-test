@@ -20,7 +20,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
+        
+      - name: Update browserslist DB  # ← 이 줄 추가
+        run: npx update-browserslist-db@latest
+        
       - name: Build Vite
         run: npm run build
 
