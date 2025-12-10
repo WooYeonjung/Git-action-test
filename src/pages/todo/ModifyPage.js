@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const ModifyPage = ({ tno }) => {
     const navigate = useNavigate();
     const moveToRead = useCallback(() => {
         navigate({ pathname: `/todo/read/${tno}` })
-    },[navigate])
+    },[navigate,tno])
     const moveToList =  useCallback(() => {
         navigate({ pathname: `/todo/list` })
     },[navigate])
