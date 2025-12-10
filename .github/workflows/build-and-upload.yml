@@ -26,11 +26,25 @@ jobs:
         
       - name: Build Vite
         run: npm run build
-
+        
+      - name: Check output folder  # 자동 감지!
+        run: |
+          if [ -d "dist" ]; then
+            echo " Vite detected (dist/)"
+            BUILD_DIR="dist"
+          elif [ -d "build" ]; then  
+            echo " CRA detected (build/)"
+            BUILD_DIR="build"
+          else
+            echo " No output folder!"
+            exit 1
+          fi
+          echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_ENV
       - name: Archive dist to tar.gz
         run: |
           mkdir -p artifacts
-          tar -czf artifacts/dist-${{ github.sha }}.tar.gz dist
+          tar -czf artifacts/build-${{ github.sha }}.tar.gz dist # build/ 사용
+          echo "✅ build folder archived"
 
       - name: Upload tar.gz to Nexus raw repo
         env:
